@@ -1,0 +1,17 @@
+.container {
+    text-align: center;
+    width: 40%;
+    
+}
+p {
+    text-align: center;
+    
+}
+.highscores {
+    float: left;
+    width: 92%;
+}
+.timer {
+    float: left;
+    width: 8%;
+}
