@@ -3,8 +3,10 @@
 // use event delegation to determine if user answer is correct, and reload page for next question
 // keep count and use local storage to keep highscores.
 
-// Need ID on each button to use event delegation
-// Need a way to determine if user answer is correct
+// if timer hits 0 or questions are done, endQuiz()
+// endQuiz sends user to fill in initials for highscore and hit save
+// once save button clicked, send user to a highscore page (variable)
+// if user hits highscore link they get sent to same highscore page
 
 var $timer = document.querySelector(".timer");
 var $button = document.querySelector(".btn");
@@ -65,8 +67,10 @@ function setTime() {
         secondsLeft--;
         $timer.textContent = "Time: " + secondsLeft;
 
-        if (secondsLeft === 0) {
+        if (secondsLeft <= 0) {
             clearInterval(timerInterval);
+            $timer.textContent = "Time: 0"
+            endQuiz();
             return;
         }
 
@@ -100,10 +104,6 @@ function questionLoop() {
     $innerContainer.appendChild(btn4);
     btn4.setAttribute("class", "answer-btn btn btn-success")
     btn4.textContent = questions[i].A[3];
-    // btn1.addEventListener('click', nextQuestion(event));
-    // btn2.addEventListener('click', nextQuestion(event));
-    // btn3.addEventListener('click', nextQuestion(event));
-    // btn4.addEventListener('click', nextQuestion(event));
 }
 
 document.querySelector(".container").addEventListener("click", function(event) {
@@ -128,6 +128,26 @@ document.querySelector(".container").addEventListener("click", function(event) {
         questionLoop();
     }
 });
+
+function endQuiz() {
+    $container.innerHTML = "";
+    var gameOver = document.createElement("h2");
+    $container.appendChild(gameOver);
+    gameOver.textContent = "Game Over! Your final score is " + correctAnswerCount + ". Please enter your initials below to save your highscore.";
+    var input = document.createElement("input");
+    $container.appendChild(input);
+    input.setAttribute("type", "text");
+    input.setAttribute("class", "input");
+    const $input = document.querySelector(".input");
+    // $input.addEventListener("submit", highscorePage());
+}
+
+function highscorePage(event) {
+    const $input = document.querySelector(".input");
+    var highscore = $input.value;
+    console.log(highscore);
+    $container.innerHTML = "";
+}
 
 // function nextQuestion(event) {
 //     console.log(event);
