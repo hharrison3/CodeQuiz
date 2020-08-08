@@ -14,6 +14,7 @@ var $container = document.querySelector(".container");
 var $content = document.querySelector(".content");
 var $title = document.querySelector('.title');
 var $innerContainer = document.querySelector(".innerContainer");
+var $highscores = document.querySelector('.highscores');
 
 var questions = [
     {
@@ -61,6 +62,7 @@ var questions = [
 var secondsLeft = 60
 var i = 0
 var correctAnswerCount = 0
+var allHighscores = [];
 
 function setTime() {
     var timerInterval = setInterval(function () {
@@ -118,7 +120,9 @@ document.querySelector(".container").addEventListener("click", function(event) {
         //empty the question container
         document.querySelector(".innerContainer").innerHTML = "";
         //check if all questions have been answered
-        if (i > 1) {
+        if (i > 6) {
+            secondsLeft = 0;
+            return;
             //end the quiz = > reroute to different url
             //window.location.href == "";
         }
@@ -138,17 +142,54 @@ function endQuiz() {
     $container.appendChild(input);
     input.setAttribute("type", "text");
     input.setAttribute("class", "input");
+    var saveBtn = document.createElement("button");
+    $container.appendChild(saveBtn);
+    saveBtn.setAttribute("class", "btn btn-success")
+    saveBtn.textContent = 'save';
+    document.querySelector(".btn").addEventListener("click", function(event) {
+        if (event.target.className = 'btn-success') {
+            //log score to array function
+            saveHighscore();
+            highscorePage();
+        }
+    });
+}
+//make this log initials and score to an array, put array in local storage
+//then have a different function send to highscore page and put array down
+
+function saveHighscore(event) {
     const $input = document.querySelector(".input");
-    // $input.addEventListener("submit", highscorePage());
+    var initials= $input.value;
+    console.log(initials);
+    allHighscores.push({'initials': initials, 'scored': correctAnswerCount});
+    if (localStorage.getItem("highscores")) {
+        const savedScores = JSON.parse(localStorage.getItem("highscores"))
+        allHighscores.push(...savedScores);
+        console.log(allHighscores);
+        localStorage.setItem('highscores', JSON.stringify(allHighscores));
+    } else {
+        localStorage.setItem('highscores', JSON.stringify(allHighscores));
+    }
+    
 }
 
-function highscorePage(event) {
-    const $input = document.querySelector(".input");
-    var highscore = $input.value;
-    console.log(highscore);
+function highscorePage() {
     $container.innerHTML = "";
-}
+    var scoreboard = document.createElement("h2");
+    $container.appendChild(scoreboard);
+    scoreboard.textContent = "Highscores:";
+    if (allHighscores != null){
+        var ol = document.createElement("ol");
+        $container.appendChild(ol);
+        ol.setAttribute("style", "width: 100px;");
+        for (let i = 0; i< allHighscores.length; i++) {
+        var score = document.createElement("li");
+        ol.appendChild(score);
+        score.textContent = allHighscores[i].initials + ": " + allHighscores[i].scored;
+        }
+    }
 
+}
 // function nextQuestion(event) {
 //     console.log(event);
 //     //check if the answer is right
@@ -156,5 +197,5 @@ function highscorePage(event) {
 
 //     // }
 // }
-
+$highscores.addEventListener("click", highscorePage);
 $button.addEventListener("click", askQuestion);
