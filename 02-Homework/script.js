@@ -1,13 +1,3 @@
-// design html to show the first page that has a button the user hits to start the quiz
-// once this button is hit, page refreshes to question 1 and timer starts in top righ corner
-// use event delegation to determine if user answer is correct, and reload page for next question
-// keep count and use local storage to keep highscores.
-
-// if timer hits 0 or questions are done, endQuiz()
-// endQuiz sends user to fill in initials for highscore and hit save
-// once save button clicked, send user to a highscore page (variable)
-// if user hits highscore link they get sent to same highscore page
-
 var $timer = document.querySelector(".timer");
 var $button = document.querySelector(".btn");
 var $container = document.querySelector(".container");
@@ -58,7 +48,6 @@ var questions = [
         answer: 'text-align: center;'
     }
 ]
-
 var secondsLeft = 60
 var i = 0
 var correctAnswerCount = 0
@@ -68,14 +57,12 @@ function setTime() {
     var timerInterval = setInterval(function () {
         secondsLeft--;
         $timer.textContent = "Time: " + secondsLeft;
-
         if (secondsLeft <= 0) {
             clearInterval(timerInterval);
             $timer.textContent = "Time: 0"
             endQuiz();
             return;
         }
-
     }, 1000);
 }
 
@@ -84,6 +71,7 @@ function askQuestion() {
     setTime();
     questionLoop();
 }
+
 function questionLoop() {
     $title.textContent = questions[i].Q;
     // button 1
@@ -123,8 +111,6 @@ document.querySelector(".container").addEventListener("click", function(event) {
         if (i > 6) {
             secondsLeft = 0;
             return;
-            //end the quiz = > reroute to different url
-            //window.location.href == "";
         }
         //add count
         i++;
@@ -154,23 +140,25 @@ function endQuiz() {
         }
     });
 }
-//make this log initials and score to an array, put array in local storage
-//then have a different function send to highscore page and put array down
 
 function saveHighscore(event) {
     const $input = document.querySelector(".input");
     var initials= $input.value;
     console.log(initials);
     allHighscores.push({'initials': initials, 'scored': correctAnswerCount});
+    savedHighscores();
+    
+}
+
+function savedHighscores() {
     if (localStorage.getItem("highscores")) {
         const savedScores = JSON.parse(localStorage.getItem("highscores"))
         allHighscores.push(...savedScores);
         console.log(allHighscores);
         localStorage.setItem('highscores', JSON.stringify(allHighscores));
-    } else {
+    } else if (!(localStorage.getItem("highscores"))) {
         localStorage.setItem('highscores', JSON.stringify(allHighscores));
     }
-    
 }
 
 function highscorePage() {
@@ -182,20 +170,38 @@ function highscorePage() {
         var ol = document.createElement("ol");
         $container.appendChild(ol);
         ol.setAttribute("style", "width: 100px;");
+        allHighscores.sort(function (x, y) {
+            return y.scored - x.scored;
+        });
         for (let i = 0; i< allHighscores.length; i++) {
         var score = document.createElement("li");
         ol.appendChild(score);
         score.textContent = allHighscores[i].initials + ": " + allHighscores[i].scored;
         }
-    }
-
+    } 
+    var clearBtn = document.createElement("button");
+    $container.appendChild(clearBtn);
+    clearBtn.setAttribute("class", "clearbtn btn btn-success")
+    clearBtn.textContent = 'clear';
+    document.querySelector(".clearbtn").addEventListener("click", function(event) {
+        if (event.target.className = 'btn-success') {
+            localStorage.clear();
+            allHighscores = [];
+            $container.innerHTML = "";
+            var scoreboard = document.createElement("h2");
+            $container.appendChild(scoreboard);
+            scoreboard.textContent = "Highscores:";
+        }
+    });
 }
-// function nextQuestion(event) {
-//     console.log(event);
-//     //check if the answer is right
-//     // if () {
+allHighscores.sort(function (x, y) {
+    return x.scored - y.scored;
+});
 
-//     // }
-// }
-$highscores.addEventListener("click", highscorePage);
+console.log(allHighscores);
+
+$highscores.addEventListener("click", function() {
+    savedHighscores();
+    highscorePage(); 
+})
 $button.addEventListener("click", askQuestion);
