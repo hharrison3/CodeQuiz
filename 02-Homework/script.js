@@ -10,44 +10,44 @@ var $highscores = document.querySelector('.highscores');
 // list of questions for quiz
 var questions = [
     {
-        Q: "Which of the following is used to describe how elements are displayed on the screen?",
+        Q: "Which of the following is used to make webpages interactive?",
         A: ["HTML", "CSS", "JavaScript", "JQuery"],
-        answer: 'CSS'
+        answer: 'JavaScript'
     },
     {
-        Q: "What does HTML stand for?",
-        A: ['Nothing, its just a random acronym', 'Helping Text Markup Language', 'Human Text Markup Language', 'Hypertext Markup Language'],
-        answer: 'Hypertext Markup Language'
+        Q: "Which of the following is not a JavaScript data type?",
+        A: ['string', 'value', 'boolean', 'object'],
+        answer: 'value'
     },
     {
-        Q: "Where is the correct section to put CSS <style> tags?",
+        Q: "Where is the correct section to put JavaScript <script> tags?",
         A: ['<div>', '<head>', '<body>', '<footer>'],
-        answer: '<head>'
+        answer: '<body>'
     },
     {
-        Q: "which one of the following invokes the function testFunction",
+        Q: "Which one of the following invokes the function testFunction?",
         A: ['call testFunction;', 'invoke testFunction();', 'testFunction;', 'testFunction();'],
         answer: 'testFunction();'
     },
     {
-        Q: "which jQuery function would be used to invoke a function on the click of the mouse",
+        Q: "Which JavaScript function would be used to invoke a function on the click of the mouse?",
         A: ['onclick();', 'addEventListener();', 'onMouseClick();', 'ifclick();'],
-        answer: 'onclick();'
+        answer: 'addEventListener();'
     },
     {
-        Q: "Which of the following declares a variable in JavaScript",
+        Q: "Which of the following declares a variable in JavaScript?",
         A: ['add newVariable;', 'variable newVariable;', 'var newVariable;', 'create newVariable;'],
         answer: 'var newVariable;'
     },
     {
-        Q: "Which of the following correctly adds a class to a <div> tag",
-        A: ['<div cl = main>', '<div addclass = main>', '<div class = main>', '<div newclass = main>'],
-        answer: '<div class = main>'
+        Q: "Which of the following creates a HTML tag using JavaScript?",
+        A: ['createElement(tag name);', '$(<tag name>);', 'newtag(tag name);', 'newElement(<tag name>);'],
+        answer: 'createElement(tag name);'
     },
     {
-        Q: "Which of the following CSS code will center the text in any given tag",
-        A: ['text-align: center;', 'center-text;', 'text-align: middle;', 'align-alltext: center;'],
-        answer: 'text-align: center;'
+        Q: "Which symbol can be used to comment in JavaScript?",
+        A: ['~', '$', '/', '//'],
+        answer: '//'
     }
 ]
 //declaring variables that will be used later on
